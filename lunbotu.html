@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title></title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        body {
+            padding: 50px;
+        }
+        
+        li {
+            list-style: none;
+        }
+        
+        div {
+            position: relative;
+            width: 736px;
+            height: 588px;
+            overflow: hidden;
+        }
+        
+        ul.image {
+            position: relative;
+        }
+        
+        ul.image li {
+            position: absolute;
+            left: 0;
+            opacity: 0;
+        }
+        
+        ul.image li.opa {
+            opacity: 1;
+        }
+        
+        li img {
+            width: 736px;
+            height: 588px;
+        }
+        
+        .pre,
+        .next {
+            position: absolute;
+            top: 45%;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+            background-color: black;
+            opacity: 0.3;
+        }
+        
+        .pre:hover {
+            opacity: 0.6;
+        }
+        
+        .next:hover {
+            opacity: 0.6;
+        }
+        
+        .next {
+            border-radius: 20px 0px 0px 20px;
+            right: 0;
+        }
+        
+        .pre {
+            border-radius: 0px 20px 20px 0px;
+            left: 0;
+        }
+        
+        .list {
+            height: 16px;
+            position: absolute;
+            left: 70px;
+            bottom: 110px;
+            line-height: 16px;
+        }
+        
+        .list li {
+            float: left;
+            margin-left: 10px;
+            width: 12px;
+            height: 12px;
+            border-radius: 6px;
+            background-color: white;
+            opacity: 0.5;
+        }
+        
+        .list li div {
+            width: 12px;
+            height: 12px;
+            border-radius: 6px;
+            background-color: white;
+            opacity: 0.5;
+        }
+        
+        .list li div:hover {
+            transform: scale(1.5, 1.5);
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <ul id="image" class="image">
+            <li><img src="image/1.webp" alt="" /></li>
+            <li><img src="image/2.webp" alt="" /></li>
+            <li><img src="image/3.webp" alt="" /></li>
+            <li><img src="image/4.jpg" alt="" /></li>
+            <li><img src="image/5.webp" alt="" /></li>
+            <li><img src="image/6.webp" alt=""></li>
+            <li><img src="image/7.webp" alt=""></li>
+            <li><img src="image/8.webp" alt=""></li>
+        </ul>
+        <div id="pre" class="pre">
+            <</div>
+                <div id="next" class="next">></div>
+        </div>
+        <ul class="list" id="list">
+            <li>
+                <div></div>
+            </li>
+            <li>
+                <div></div>
+            </li>
+            <li>
+                <div></div>
+            </li>
+            <li>
+                <div></div>
+            </li>
+            <li>
+                <div></div>
+            </li>
+            <li>
+                <div></div>
+            </li>
+            <li>
+                <div></div>
+            </li>
+            <li>
+                <div></div>
+            </li>
+
+        </ul>
+        <script src="js/jquery.js"></script>
+        <script>
+            //初始化
+            var index = 0;
+            var t;
+            var length = $('ul li').length;
+
+            $('#image li').eq(index).addClass('opa');
+
+            //自动切换图片
+            var flag = setInterval(autoMove, 3000);
+
+            function autoMove() {
+                index++;
+                if (index >= length) index = 0;
+                changeTo(index);
+            }
+
+            function changeTo(index) {
+                $('#image li').eq(index).addClass('opa').siblings().removeClass('opa');
+            }
+
+            $('#box').bind('mouseover', function() {
+                clearInterval(flag);
+            })
+
+            $('#box').bind('mouseout', function() {
+                flag = setInterval(autoMove, 3000);
+            })
+
+
+            $('#pre').click(function() {
+                index--;
+                if (index < 0) index = length - 1;
+                changeTo(index);
+            });
+            $('#next').click(function() {
+                index++;
+                if (index >= length) index = 0;
+                changeTo(index);
+            });
+
+            for (let i = 0; i < $('#list').children().length; i++) {
+                $('#list').children().eq(i).attr("value", i);
+            }
+            for (let i = 0; i < $('#list').children().length; i++) {
+                $('#list').children().eq(i).mouseover(
+                    function() {
+                        $(this).css('opacity', '1');
+                        clearInterval(flag);
+                        changeTo($(this).attr('value'));
+                    }
+                )
+                $('#list').children().eq(i).mouseout(function() {
+                    $(this).css('opacity', '0.5')
+                })
+            }
+        </script>
+</body>
+
+</html>
